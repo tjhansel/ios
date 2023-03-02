@@ -61,8 +61,32 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = model.name
+        let checkmark = model.completed ? "" : ""
+        cell.textLabel?.attributedText = NSAttributedString(string: "\(checkmark) \(model.name ?? "done")", attributes: [NSAttributedString.Key.strikethroughStyle: model.completed ? NSUnderlineStyle.single.rawValue : 0])
+
+           // Add checkmark toggle
+           cell.accessoryType = model.completed ? .checkmark : .none
+           
+           // Add swipe gestures
+           let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+           swipeGesture.direction = model.completed ? .left : .right
+           cell.addGestureRecognizer(swipeGesture)
         return cell
+    }
+    @objc private func handleSwipeGesture(_ gestureRecognizer: UISwipeGestureRecognizer) {
+        guard let cell = gestureRecognizer.view as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        
+        let item = models[indexPath.row]
+        item.completed.toggle()
+        
+        do {
+            try context.save()
+            getAllItems()
+        } catch {
+            fatalError("Failed to save item: \(error)")
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
