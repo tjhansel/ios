@@ -8,7 +8,7 @@
 import CoreData
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class GroceryListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -62,7 +62,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let model = models[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let checkmark = model.completed ? "" : ""
-        cell.textLabel?.attributedText = NSAttributedString(string: "\(checkmark) \(model.name ?? "done")", attributes: [NSAttributedString.Key.strikethroughStyle: model.completed ? NSUnderlineStyle.single.rawValue : 0])
+        cell.textLabel?.attributedText = NSAttributedString(string: "\(checkmark) \(model.itemName ?? "done")", attributes: [NSAttributedString.Key.strikethroughStyle: model.completed ? NSUnderlineStyle.single.rawValue : 0])
 
            // Add checkmark toggle
            cell.accessoryType = model.completed ? .checkmark : .none
@@ -99,7 +99,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let alert = UIAlertController(title: "Edit Item", message: "Update Grocery Item", preferredStyle: .alert)
             alert.addTextField(configurationHandler: nil)
-            alert.textFields?.first?.text = item.name
+            alert.textFields?.first?.text = item.itemName
             alert.addAction(UIAlertAction(title: "Save", style: .cancel, handler: {[weak self] _ in
                 guard let field = alert.textFields?.first, let newItemName = field.text, !newItemName.isEmpty else {
                     return
@@ -134,7 +134,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func createItem(name: String){
         let newItem = GroceryListItem(context: context)
-        newItem.name = name
+        newItem.itemName = name
         newItem.addedAt = Date()
         
         do{
@@ -159,7 +159,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func updateItem(item: GroceryListItem, newItemName: String){
-        item.name = newItemName
+        item.itemName = newItemName
         
         do{
             try context.save()

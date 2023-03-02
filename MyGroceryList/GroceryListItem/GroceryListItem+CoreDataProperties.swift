@@ -16,10 +16,10 @@ extension GroceryListItem {
         return NSFetchRequest<GroceryListItem>(entityName: "GroceryListItem")
     }
 
-    @NSManaged public var name: String?
+    @NSManaged public var itemName: String?
     @NSManaged public var addedAt: Date?
     @NSManaged public var completed: Bool
-    @NSManaged public var store: String?
+    @NSManaged public var storeName: String?
 
 }
 
