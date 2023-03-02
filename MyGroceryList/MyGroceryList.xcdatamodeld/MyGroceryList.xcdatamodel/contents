@@ -6,4 +6,8 @@
         <attribute name="itemName" optional="YES" attributeType="String"/>
         <attribute name="storeName" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="Store" representedClassName="Store" syncable="YES" codeGenerationType="class">
+        <attribute name="items" optional="YES" attributeType="Transformable"/>
+        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify"/>
+    </entity>
 </model>

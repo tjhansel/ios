@@ -31,18 +31,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
         tableView.frame = view.bounds
         
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(didTapClearAll))
     }
+    
     @objc private func didTapAdd(){
         let alert = UIAlertController(title: "New Item", message: "Enter New Item", preferredStyle: .alert)
         alert.addTextField(configurationHandler: nil)
+        alert.addTextField(configurationHandler: nil)
         alert.addAction(UIAlertAction(title: "Submit", style: .cancel, handler: {[weak self] _ in
-            guard let field = alert.textFields?.first, let text = field.text, !text.isEmpty else {
+            guard let nameField = alert.textFields?[0], let nameText = nameField.text, !nameText.isEmpty,
+                let storeField = alert.textFields?[1], let storeText = storeField.text, !storeText.isEmpty
+            else {
                 return
             }
-            self?.createItem(name: text)
+            self?.createItem(name: nameText, storeName: storeText)
         }))
         present(alert, animated: true)
     }
@@ -54,6 +57,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
            }))
            present(alert, animated: true)
        }
+    @objc func storeNameTextFieldDidChange(_ textField: UITextField) {
+        guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
+            return
+        }
+        let selectedItem = models[selectedIndexPath.row]
+        selectedItem.storeName = textField.text ?? ""
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models.count
@@ -62,16 +72,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        // strikeout and check mark
         let checkmark = model.completed ? "" : ""
         cell.textLabel?.attributedText = NSAttributedString(string: "\(checkmark) \(model.itemName ?? "Purchased Item Removed")", attributes: [NSAttributedString.Key.strikethroughStyle: model.completed ? NSUnderlineStyle.single.rawValue : 0])
-
-           // Add checkmark toggle
-           cell.accessoryType = model.completed ? .checkmark : .none
-           
-           // Add swipe gestures
-           let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
-           swipeGesture.direction = model.completed ? .left : .right
-           cell.addGestureRecognizer(swipeGesture)
+        cell.accessoryType = model.completed ? .checkmark : .none
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+        swipeGesture.direction = model.completed ? .left : .right
+        cell.addGestureRecognizer(swipeGesture)
+        
+        let groceryListItem = models[indexPath.row]
+        
+        cell.textLabel?.text = groceryListItem.itemName
+        cell.detailTextLabel?.text = groceryListItem.storeName
+            
         return cell
     }
     @objc private func handleSwipeGesture(_ gestureRecognizer: UISwipeGestureRecognizer) {
@@ -133,10 +147,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func createItem(name: String){
+    func createItem(name: String, storeName: String){
         let newItem = GroceryListItem(context: context)
         newItem.itemName = name
         newItem.addedAt = Date()
+        newItem.storeName = storeName
         
         do{
             try context.save()
