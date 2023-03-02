@@ -3,6 +3,7 @@
     <entity name="GroceryListItem" representedClassName="GroceryListItem" syncable="YES">
         <attribute name="addedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="completed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="itemName" optional="YES" attributeType="String"/>
+        <attribute name="storeName" optional="YES" attributeType="String"/>
     </entity>
 </model>

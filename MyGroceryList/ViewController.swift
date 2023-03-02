@@ -8,7 +8,7 @@
 import CoreData
 import UIKit
 
-class GroceryListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -30,6 +30,7 @@ class GroceryListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         tableView.frame = view.bounds
+        
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(didTapClearAll))
@@ -62,7 +63,7 @@ class GroceryListViewController: UIViewController, UITableViewDelegate, UITableV
         let model = models[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let checkmark = model.completed ? "" : ""
-        cell.textLabel?.attributedText = NSAttributedString(string: "\(checkmark) \(model.itemName ?? "done")", attributes: [NSAttributedString.Key.strikethroughStyle: model.completed ? NSUnderlineStyle.single.rawValue : 0])
+        cell.textLabel?.attributedText = NSAttributedString(string: "\(checkmark) \(model.itemName ?? "Purchased Item Removed")", attributes: [NSAttributedString.Key.strikethroughStyle: model.completed ? NSUnderlineStyle.single.rawValue : 0])
 
            // Add checkmark toggle
            cell.accessoryType = model.completed ? .checkmark : .none

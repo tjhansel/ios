@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		17F3DA5029B0D92500560907 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F3DA4F29B0D92500560907 /* AppDelegate.swift */; };
 		17F3DA5229B0D92500560907 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F3DA5129B0D92500560907 /* SceneDelegate.swift */; };
-		17F3DA5429B0D92500560907 /* GroceryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F3DA5329B0D92500560907 /* GroceryListViewController.swift */; };
+		17F3DA5429B0D92500560907 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F3DA5329B0D92500560907 /* ViewController.swift */; };
 		17F3DA5729B0D92500560907 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17F3DA5529B0D92500560907 /* Main.storyboard */; };
 		17F3DA5A29B0D92500560907 /* MyGroceryList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17F3DA5829B0D92500560907 /* MyGroceryList.xcdatamodeld */; };
 		17F3DA5C29B0D92500560907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17F3DA5B29B0D92500560907 /* Assets.xcassets */; };
@@ -23,7 +23,7 @@
 		17F3DA4C29B0D92500560907 /* MyGroceryList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyGroceryList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17F3DA4F29B0D92500560907 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		17F3DA5129B0D92500560907 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		17F3DA5329B0D92500560907 /* GroceryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryListViewController.swift; sourceTree = "<group>"; };
+		17F3DA5329B0D92500560907 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		17F3DA5629B0D92500560907 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		17F3DA5929B0D92500560907 /* MyGroceryList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyGroceryList.xcdatamodel; sourceTree = "<group>"; };
 		17F3DA5B29B0D92500560907 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 				17F3DA6A29B0DA0E00560907 /* GroceryListItem */,
 				17F3DA4F29B0D92500560907 /* AppDelegate.swift */,
 				17F3DA5129B0D92500560907 /* SceneDelegate.swift */,
-				17F3DA5329B0D92500560907 /* GroceryListViewController.swift */,
+				17F3DA5329B0D92500560907 /* ViewController.swift */,
 				17F3DA8929B125B600560907 /* StoreListViewController.swift */,
 				17F3DA5529B0D92500560907 /* Main.storyboard */,
 				17F3DA5B29B0D92500560907 /* Assets.xcassets */,
@@ -160,7 +160,7 @@
 			files = (
 				17F3DA8A29B125B600560907 /* StoreListViewController.swift in Sources */,
 				17F3DA6829B0D9FD00560907 /* GroceryListItem+CoreDataClass.swift in Sources */,
-				17F3DA5429B0D92500560907 /* GroceryListViewController.swift in Sources */,
+				17F3DA5429B0D92500560907 /* ViewController.swift in Sources */,
 				17F3DA5029B0D92500560907 /* AppDelegate.swift in Sources */,
 				17F3DA5229B0D92500560907 /* SceneDelegate.swift in Sources */,
 				17F3DA6929B0D9FD00560907 /* GroceryListItem+CoreDataProperties.swift in Sources */,
