@@ -5,6 +5,7 @@
 //  Created by Jordan Hansen on 3/2/23.
 //
 
+import CoreData
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
