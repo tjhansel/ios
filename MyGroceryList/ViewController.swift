@@ -32,6 +32,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.frame = view.bounds
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(didTapClearAll))
     }
     @objc private func didTapAdd(){
         let alert = UIAlertController(title: "New Item", message: "Enter New Item", preferredStyle: .alert)
@@ -44,6 +45,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }))
         present(alert, animated: true)
     }
+    @objc private func didTapClearAll() {
+           let alert = UIAlertController(title: "Clear All Items", message: "Are you sure you want to delete all items?", preferredStyle: .alert)
+           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+           alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+               self?.deleteAllItems()
+           }))
+           present(alert, animated: true)
+       }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models.count
@@ -136,6 +145,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             fatalError("Failed to update item: \(error)")
         }
         
+    }
+    func deleteAllItems() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = GroceryListItem.fetchRequest()
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(batchDeleteRequest)
+            models.removeAll()
+            tableView.reloadData()
+        }
+        catch {
+            fatalError("Failed to delete all items: \(error)")
+        }
     }
 }
 
