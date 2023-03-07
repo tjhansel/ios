@@ -2,7 +2,7 @@
 //  GroceryListItem+CoreDataProperties.swift
 //  MyGroceryList
 //
-//  Created by Jordan Hansen on 3/2/23.
+//  Created by Jordan Hansen on 3/3/23.
 //
 //
 
@@ -16,10 +16,10 @@ extension GroceryListItem {
         return NSFetchRequest<GroceryListItem>(entityName: "GroceryListItem")
     }
 
-    @NSManaged public var itemName: String?
     @NSManaged public var addedAt: Date?
     @NSManaged public var completed: Bool
-    @NSManaged public var storeName: String?
+    @NSManaged public var itemName: String?
+    @NSManaged public var storeObj: Store?
 
 }
 

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ItemsListViewController.swift
 //  MyGroceryList
 //
 //  Created by Jordan Hansen on 3/2/23.
@@ -8,7 +8,7 @@
 import CoreData
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ItemsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -21,6 +21,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     private var models = [GroceryListItem]()
     
+    var store: Store?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,21 +32,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
         tableView.frame = view.bounds
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(didTapClearAll))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(didTapClearAll)),
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
+        ]
     }
     
     @objc private func didTapAdd(){
         let alert = UIAlertController(title: "New Item", message: "Enter New Item", preferredStyle: .alert)
         alert.addTextField(configurationHandler: nil)
-        alert.addTextField(configurationHandler: nil)
         alert.addAction(UIAlertAction(title: "Submit", style: .cancel, handler: {[weak self] _ in
-            guard let nameField = alert.textFields?[0], let nameText = nameField.text, !nameText.isEmpty,
-                let storeField = alert.textFields?[1], let storeText = storeField.text, !storeText.isEmpty
+            guard let nameField = alert.textFields?[0], let nameText = nameField.text, !nameText.isEmpty
             else {
                 return
             }
-            self?.createItem(name: nameText, storeName: storeText)
+            self?.createItem(name: nameText)
         }))
         present(alert, animated: true)
     }
@@ -57,13 +58,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
            }))
            present(alert, animated: true)
        }
-    @objc func storeNameTextFieldDidChange(_ textField: UITextField) {
-        guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
-            return
-        }
-        let selectedItem = models[selectedIndexPath.row]
-        selectedItem.storeName = textField.text ?? ""
-    }
+//    @objc func storeNameTextFieldDidChange(_ textField: UITextField) {
+//        guard let selectedIndexPath = tableView.indexPathForSelectedRow else {
+//            return
+//        }
+//        let selectedItem = models[selectedIndexPath.row]
+//        selectedItem.storeName = textField.text ?? ""
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models.count
@@ -84,7 +85,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let groceryListItem = models[indexPath.row]
         
         cell.textLabel?.text = groceryListItem.itemName
-        cell.detailTextLabel?.text = groceryListItem.storeName
             
         return cell
     }
@@ -114,7 +114,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let alert = UIAlertController(title: "Edit Item", message: "Update Grocery Item", preferredStyle: .alert)
             alert.addTextField(configurationHandler: nil)
-            alert.textFields?.first?.text = item.itemName
             alert.addAction(UIAlertAction(title: "Save", style: .cancel, handler: {[weak self] _ in
                 guard let field = alert.textFields?.first, let newItemName = field.text, !newItemName.isEmpty else {
                     return
@@ -147,11 +146,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    func createItem(name: String, storeName: String){
+    func createItem(name: String){
         let newItem = GroceryListItem(context: context)
         newItem.itemName = name
         newItem.addedAt = Date()
-        newItem.storeName = storeName
+        store?.addToListItems(newItem)
         
         do{
             try context.save()

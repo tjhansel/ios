@@ -4,10 +4,10 @@
         <attribute name="addedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="completed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="itemName" optional="YES" attributeType="String"/>
-        <attribute name="storeName" optional="YES" attributeType="String"/>
+        <relationship name="storeObj" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Store" inverseName="listItems" inverseEntity="Store"/>
     </entity>
-    <entity name="Store" representedClassName="Store" syncable="YES" codeGenerationType="class">
-        <attribute name="items" optional="YES" attributeType="Transformable"/>
-        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify"/>
+    <entity name="Store" representedClassName="Store" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="listItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GroceryListItem" inverseName="storeObj" inverseEntity="GroceryListItem"/>
     </entity>
 </model>
