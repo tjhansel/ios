@@ -19,7 +19,7 @@ extension GroceryListItem {
     @NSManaged public var addedAt: Date?
     @NSManaged public var completed: Bool
     @NSManaged public var itemName: String?
-    @NSManaged public var storeObj: Store?
+    @NSManaged public var store: Store?
 
 }
 

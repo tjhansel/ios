@@ -135,14 +135,9 @@ class ItemsListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Core Data
     
     func getAllItems(){
-        do{
-            models = try context.fetch(GroceryListItem.fetchRequest())
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-        catch {
-            fatalError("Failed to fetch items: \(error)")
+        models = store?.listItems?.allObjects as? [GroceryListItem] ?? []
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
@@ -187,16 +182,26 @@ class ItemsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     func deleteAllItems() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = GroceryListItem.fetchRequest()
+        let filter = store!.name
+        let predicate = NSPredicate(format: "store.name == %@", store!.name!)
+        fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        batchDeleteRequest.resultType = .resultTypeObjectIDs
         
-        do {
-            try context.execute(batchDeleteRequest)
-            models.removeAll()
-            tableView.reloadData()
+        if let delete = try? context.execute(batchDeleteRequest) as? NSBatchDeleteResult {
+            let changes = [NSDeletedObjectsKey: delete.result as? [NSManagedObjectID] ?? []]
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+            
+            do {
+                context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+                try context.save()
+            } catch {
+                fatalError("\(error)")
+            }
+
+            getAllItems()
         }
-        catch {
-            fatalError("Failed to delete all items: \(error)")
-        }
+        getAllItems()
     }
 }
 
