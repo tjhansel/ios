@@ -81,7 +81,7 @@ class StoreListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        tableView.deselectRow(at: indexPath, animated: true)
 //
-        let store = stores[indexPath.row]
+        _ = stores[indexPath.row]
         
         performSegue(withIdentifier: "viewList", sender: nil)
 //        let sheet = UIAlertController(title: "Modify Store", message: nil, preferredStyle: .actionSheet)
@@ -106,10 +106,9 @@ class StoreListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var vc = segue.destination as? ItemsListViewController
+        let vc = segue.destination as? ItemsListViewController
         let storeObj = stores [tableView.indexPathForSelectedRow?.row ?? 0]
         vc?.store = storeObj
-        
     }
     
     //Core Data
