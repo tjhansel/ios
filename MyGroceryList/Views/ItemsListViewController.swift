@@ -182,7 +182,7 @@ class ItemsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     func deleteAllItems() {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = GroceryListItem.fetchRequest()
-        let filter = store!.name
+        _ = store!.name
         let predicate = NSPredicate(format: "store.name == %@", store!.name!)
         fetchRequest.predicate = predicate
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
